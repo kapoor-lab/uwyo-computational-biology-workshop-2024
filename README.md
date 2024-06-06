@@ -1,2 +1,2 @@
 # Workshop Day-3 Materials
-Includes Lectures, Tutorials, and hackathon problem sets.
+Includes Lectures, Tutorials, and Hackathon problem sets.
