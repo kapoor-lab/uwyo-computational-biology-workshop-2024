@@ -1,0 +1,17 @@
+name: biocomworkshop
+channels:
+  - plumed/label/lugano
+  - conda-forge
+dependencies:
+  - python
+  - plumed
+  - gromacs
+  - matplotlib
+  - matplotlib-inline
+  - mda-xdrlib
+  - mdanalysis
+  - babel
+  - nglview
+  - numpy
+  - notebook
+  - openbabel

@@ -1,0 +1,63 @@
+#!/bin/bash
+# How to use script: submit_gromacs <no_of_tasks> <no_of_CPUs> <job_name>
+
+args=("$@")
+
+if ! ((${#args[@]}==3)); then
+  echo -e "Error: Need 3 arguments --- suggested usage\nsubmit_gromacs <no-of-tasks> <no-of-CPUS-per-task> <job-name> \n"
+  exit 64
+fi
+
+# Input variables
+# Number of MPI tasks per node:
+TASK=${args[0]}
+# Number of OMP threads per MPI process:
+CPUS=${args[1]}
+# What you'd like your job to be called (e.g. final_final_job_v4):
+JOB_NAME=${args[2]}
+
+# Other variables
+# Number of nodes intended:
+NODE=1
+# memory per core:
+MEM=50GB
+# Time for the job:
+TIME=48:00:00
+
+# Generate particular job submit script
+SCRIPT_NAME=submit_$JOB_NAME
+
+PROC=$((NODE * TASK))
+
+cat > $SCRIPT_NAME<<!
+#!/bin/bash
+#SBATCH --nodes=$NODE
+#SBATCH --ntasks-per-node=$TASK
+#SBATCH --cpus-per-task=$CPUS
+#SBATCH --account=biocompworkshop
+#SBATCH --time=$TIME
+#SBATCH --job-name=$JOB_NAME
+#SBATCH --output=$JOB_NAME.out
+#SBATCH --mem=$MEM
+#SBATCH --partition=dgx
+#SBATCH --gres=gpu:1
+
+cd \$SLURM_SUBMIT_DIR
+
+export OMP_NUM_THREADS=$CPUS
+
+module use /project/biocompworkshop/ukapoor/codes/packages
+module load gromacs/2022.5
+
+#gmx_mpi mdrun -deffnm $JOB_NAME
+gmx_mpi mdrun -deffnm $JOB_NAME -nb gpu
+!
+
+JOBID=($(sbatch $SCRIPT_NAME))
+JOBID=${JOBID[3]}
+printf "\n"
+echo "  Job is queued. Job ID is: $JOBID"
+
+cat >> $SCRIPT_NAME<<!
+$JOBID
+!
