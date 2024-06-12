@@ -13,12 +13,6 @@ conda activate /pfs/tc1/project/biocompworkshop/software/conda-envs/biocomp-day3
 ```bash
 jupyter-notebook
 ```
-or
-
-'''bash
-jupyter-lab
-```
-
 ## load VMD
 ```bash
 module use /project/biocompworkshop/ukapoor/codes/packages/
