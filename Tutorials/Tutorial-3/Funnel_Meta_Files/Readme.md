@@ -3,7 +3,7 @@
 git clone https://github.com/kapoor-lab/uwyo-computational-biology-workshop-2024.git
 ```
 ## Activate Environment 
-###open your terminal and execute the following commands
+### open your terminal and execute the following commands
 ```bash
 module load miniconda3/23.11.0
 ```
